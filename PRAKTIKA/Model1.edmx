@@ -1,0 +1,601 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище ПрактикаModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Buyer">
+          <Key>
+            <PropertyRef Name="ID_Buyer" />
+          </Key>
+          <Property Name="ID_Buyer" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Buyer_adress" Type="nvarchar" MaxLength="200" />
+          <Property Name="production_type_buyer" Type="nvarchar" MaxLength="50" />
+          <Property Name="Cost" Type="money" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="ID_Customer" />
+          </Key>
+          <Property Name="ID_Customer" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Treaty_number" Type="int" />
+          <Property Name="customer_adress" Type="nvarchar" MaxLength="200" />
+          <Property Name="Production_type" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="ID_Driver" />
+          </Key>
+          <Property Name="ID_Driver" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Driver_surname" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driver_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driver_LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Car_number" Type="nvarchar" MaxLength="50" />
+          <Property Name="Driver_data" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Driver_Buyer">
+          <Key>
+            <PropertyRef Name="ID_Buyer" />
+          </Key>
+          <Property Name="ID_Buyer" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Driver" Type="smallint" />
+          <Property Name="ID_DR_BUY" Type="smallint" />
+        </EntityType>
+        <EntityType Name="Driver_Customer">
+          <Key>
+            <PropertyRef Name="ID_Driver" />
+          </Key>
+          <Property Name="ID_Driver" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Customer" Type="smallint" />
+          <Property Name="ID_DR_CUS" Type="smallint" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="ID_Stock" />
+          </Key>
+          <Property Name="ID_Stock" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Production_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="production_number" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type_STO" Type="nvarchar" MaxLength="50" />
+          <Property Name="Create_date" Type="date" />
+          <Property Name="quanity_of_bottles" Type="int" />
+          <Property Name="quanity_of_pallets" Type="int" />
+          <Property Name="production_rows" Type="smallint" />
+        </EntityType>
+        <EntityType Name="Stock_buyer">
+          <Key>
+            <PropertyRef Name="ID_Stock" />
+          </Key>
+          <Property Name="ID_Stock" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Buyer" Type="smallint" />
+          <Property Name="ID_ST_BUY" Type="smallint" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Driver_Buyer_Buyer">
+          <End Role="Buyer" Type="Self.Buyer" Multiplicity="0..1" />
+          <End Role="Driver_Buyer" Type="Self.Driver_Buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buyer">
+              <PropertyRef Name="ID_Buyer" />
+            </Principal>
+            <Dependent Role="Driver_Buyer">
+              <PropertyRef Name="ID_DR_BUY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Driver_Buyer_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="Driver_Buyer" Type="Self.Driver_Buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="ID_Driver" />
+            </Principal>
+            <Dependent Role="Driver_Buyer">
+              <PropertyRef Name="ID_Driver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Driver_Customer_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Driver_Customer" Type="Self.Driver_Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID_Customer" />
+            </Principal>
+            <Dependent Role="Driver_Customer">
+              <PropertyRef Name="ID_Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Driver_Customer_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="Driver_Customer" Type="Self.Driver_Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="ID_Driver" />
+            </Principal>
+            <Dependent Role="Driver_Customer">
+              <PropertyRef Name="ID_DR_CUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stock_buyer_Buyer">
+          <End Role="Buyer" Type="Self.Buyer" Multiplicity="0..1" />
+          <End Role="Stock_buyer" Type="Self.Stock_buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buyer">
+              <PropertyRef Name="ID_Buyer" />
+            </Principal>
+            <Dependent Role="Stock_buyer">
+              <PropertyRef Name="ID_Buyer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stock_buyer_Stock">
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <End Role="Stock_buyer" Type="Self.Stock_buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stock">
+              <PropertyRef Name="ID_Stock" />
+            </Principal>
+            <Dependent Role="Stock_buyer">
+              <PropertyRef Name="ID_ST_BUY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="func_SumTotal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="decimal">
+          <Parameter Name="ID_Buyer" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="Хранилище ПрактикаModelContainer">
+          <EntitySet Name="Buyer" EntityType="Self.Buyer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Driver" EntityType="Self.Driver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Driver_Buyer" EntityType="Self.Driver_Buyer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Driver_Customer" EntityType="Self.Driver_Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stock" EntityType="Self.Stock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stock_buyer" EntityType="Self.Stock_buyer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Driver_Buyer_Buyer" Association="Self.FK_Driver_Buyer_Buyer">
+            <End Role="Buyer" EntitySet="Buyer" />
+            <End Role="Driver_Buyer" EntitySet="Driver_Buyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Driver_Buyer_Driver" Association="Self.FK_Driver_Buyer_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="Driver_Buyer" EntitySet="Driver_Buyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Driver_Customer_Customer" Association="Self.FK_Driver_Customer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Driver_Customer" EntitySet="Driver_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Driver_Customer_Driver" Association="Self.FK_Driver_Customer_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="Driver_Customer" EntitySet="Driver_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stock_buyer_Buyer" Association="Self.FK_Stock_buyer_Buyer">
+            <End Role="Buyer" EntitySet="Buyer" />
+            <End Role="Stock_buyer" EntitySet="Stock_buyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stock_buyer_Stock" Association="Self.FK_Stock_buyer_Stock">
+            <End Role="Stock" EntitySet="Stock" />
+            <End Role="Stock_buyer" EntitySet="Stock_buyer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ПрактикаModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Buyer">
+          <Key>
+            <PropertyRef Name="ID_Buyer" />
+          </Key>
+          <Property Name="ID_Buyer" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Buyer_adress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="production_type_buyer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Cost" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Driver_Buyer" Relationship="Self.FK_Driver_Buyer_Buyer" FromRole="Buyer" ToRole="Driver_Buyer" />
+          <NavigationProperty Name="Stock_buyer" Relationship="Self.FK_Stock_buyer_Buyer" FromRole="Buyer" ToRole="Stock_buyer" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="ID_Customer" />
+          </Key>
+          <Property Name="ID_Customer" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Treaty_number" Type="Int32" />
+          <Property Name="customer_adress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Production_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Driver_Customer" Relationship="Self.FK_Driver_Customer_Customer" FromRole="Customer" ToRole="Driver_Customer" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="ID_Driver" />
+          </Key>
+          <Property Name="ID_Driver" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Driver_surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driver_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driver_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Car_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Driver_data" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Driver_Buyer" Relationship="Self.FK_Driver_Buyer_Driver" FromRole="Driver" ToRole="Driver_Buyer" />
+          <NavigationProperty Name="Driver_Customer" Relationship="Self.FK_Driver_Customer_Driver" FromRole="Driver" ToRole="Driver_Customer" />
+        </EntityType>
+        <EntityType Name="Driver_Buyer">
+          <Key>
+            <PropertyRef Name="ID_Buyer" />
+          </Key>
+          <Property Name="ID_Buyer" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Driver" Type="Int16" />
+          <Property Name="ID_DR_BUY" Type="Int16" />
+          <NavigationProperty Name="Buyer" Relationship="Self.FK_Driver_Buyer_Buyer" FromRole="Driver_Buyer" ToRole="Buyer" />
+          <NavigationProperty Name="Driver" Relationship="Self.FK_Driver_Buyer_Driver" FromRole="Driver_Buyer" ToRole="Driver" />
+        </EntityType>
+        <EntityType Name="Driver_Customer">
+          <Key>
+            <PropertyRef Name="ID_Driver" />
+          </Key>
+          <Property Name="ID_Driver" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Customer" Type="Int16" />
+          <Property Name="ID_DR_CUS" Type="Int16" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Driver_Customer_Customer" FromRole="Driver_Customer" ToRole="Customer" />
+          <NavigationProperty Name="Driver" Relationship="Self.FK_Driver_Customer_Driver" FromRole="Driver_Customer" ToRole="Driver" />
+        </EntityType>
+        <EntityType Name="Stock">
+          <Key>
+            <PropertyRef Name="ID_Stock" />
+          </Key>
+          <Property Name="ID_Stock" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Production_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="production_number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type_STO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Create_date" Type="DateTime" Precision="0" />
+          <Property Name="quanity_of_bottles" Type="Int32" />
+          <Property Name="quanity_of_pallets" Type="Int32" />
+          <Property Name="production_rows" Type="Int16" />
+          <NavigationProperty Name="Stock_buyer" Relationship="Self.FK_Stock_buyer_Stock" FromRole="Stock" ToRole="Stock_buyer" />
+        </EntityType>
+        <EntityType Name="Stock_buyer">
+          <Key>
+            <PropertyRef Name="ID_Stock" />
+          </Key>
+          <Property Name="ID_Stock" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Buyer" Type="Int16" />
+          <Property Name="ID_ST_BUY" Type="Int16" />
+          <NavigationProperty Name="Buyer" Relationship="Self.FK_Stock_buyer_Buyer" FromRole="Stock_buyer" ToRole="Buyer" />
+          <NavigationProperty Name="Stock" Relationship="Self.FK_Stock_buyer_Stock" FromRole="Stock_buyer" ToRole="Stock" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Driver_Buyer_Buyer">
+          <End Role="Buyer" Type="Self.Buyer" Multiplicity="0..1" />
+          <End Role="Driver_Buyer" Type="Self.Driver_Buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buyer">
+              <PropertyRef Name="ID_Buyer" />
+            </Principal>
+            <Dependent Role="Driver_Buyer">
+              <PropertyRef Name="ID_DR_BUY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stock_buyer_Buyer">
+          <End Role="Buyer" Type="Self.Buyer" Multiplicity="0..1" />
+          <End Role="Stock_buyer" Type="Self.Stock_buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Buyer">
+              <PropertyRef Name="ID_Buyer" />
+            </Principal>
+            <Dependent Role="Stock_buyer">
+              <PropertyRef Name="ID_Buyer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Driver_Customer_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Driver_Customer" Type="Self.Driver_Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID_Customer" />
+            </Principal>
+            <Dependent Role="Driver_Customer">
+              <PropertyRef Name="ID_Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Driver_Buyer_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="Driver_Buyer" Type="Self.Driver_Buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="ID_Driver" />
+            </Principal>
+            <Dependent Role="Driver_Buyer">
+              <PropertyRef Name="ID_Driver" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Driver_Customer_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="Driver_Customer" Type="Self.Driver_Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="ID_Driver" />
+            </Principal>
+            <Dependent Role="Driver_Customer">
+              <PropertyRef Name="ID_DR_CUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stock_buyer_Stock">
+          <End Role="Stock" Type="Self.Stock" Multiplicity="0..1" />
+          <End Role="Stock_buyer" Type="Self.Stock_buyer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stock">
+              <PropertyRef Name="ID_Stock" />
+            </Principal>
+            <Dependent Role="Stock_buyer">
+              <PropertyRef Name="ID_ST_BUY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ПрактикаEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Buyer" EntityType="Self.Buyer" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" />
+          <EntitySet Name="Driver" EntityType="Self.Driver" />
+          <EntitySet Name="Driver_Buyer" EntityType="Self.Driver_Buyer" />
+          <EntitySet Name="Driver_Customer" EntityType="Self.Driver_Customer" />
+          <EntitySet Name="Stock" EntityType="Self.Stock" />
+          <EntitySet Name="Stock_buyer" EntityType="Self.Stock_buyer" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Driver_Buyer_Buyer" Association="Self.FK_Driver_Buyer_Buyer">
+            <End Role="Buyer" EntitySet="Buyer" />
+            <End Role="Driver_Buyer" EntitySet="Driver_Buyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stock_buyer_Buyer" Association="Self.FK_Stock_buyer_Buyer">
+            <End Role="Buyer" EntitySet="Buyer" />
+            <End Role="Stock_buyer" EntitySet="Stock_buyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Driver_Customer_Customer" Association="Self.FK_Driver_Customer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Driver_Customer" EntitySet="Driver_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Driver_Buyer_Driver" Association="Self.FK_Driver_Buyer_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="Driver_Buyer" EntitySet="Driver_Buyer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Driver_Customer_Driver" Association="Self.FK_Driver_Customer_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="Driver_Customer" EntitySet="Driver_Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stock_buyer_Stock" Association="Self.FK_Stock_buyer_Stock">
+            <End Role="Stock" EntitySet="Stock" />
+            <End Role="Stock_buyer" EntitySet="Stock_buyer" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ПрактикаModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ПрактикаModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище ПрактикаModelContainer" CdmEntityContainer="ПрактикаEntities">
+          <EntitySetMapping Name="Buyer">
+            <EntityTypeMapping TypeName="ПрактикаModel.Buyer">
+              <MappingFragment StoreEntitySet="Buyer">
+                <ScalarProperty Name="ID_Buyer" ColumnName="ID_Buyer" />
+                <ScalarProperty Name="Buyer_adress" ColumnName="Buyer_adress" />
+                <ScalarProperty Name="production_type_buyer" ColumnName="production_type_buyer" />
+                <ScalarProperty Name="Cost" ColumnName="Cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer">
+            <EntityTypeMapping TypeName="ПрактикаModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="ID_Customer" ColumnName="ID_Customer" />
+                <ScalarProperty Name="Treaty_number" ColumnName="Treaty_number" />
+                <ScalarProperty Name="customer_adress" ColumnName="customer_adress" />
+                <ScalarProperty Name="Production_type" ColumnName="Production_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Driver">
+            <EntityTypeMapping TypeName="ПрактикаModel.Driver">
+              <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="ID_Driver" ColumnName="ID_Driver" />
+                <ScalarProperty Name="Driver_surname" ColumnName="Driver_surname" />
+                <ScalarProperty Name="Driver_name" ColumnName="Driver_name" />
+                <ScalarProperty Name="Driver_LastName" ColumnName="Driver_LastName" />
+                <ScalarProperty Name="Car_number" ColumnName="Car_number" />
+                <ScalarProperty Name="Driver_data" ColumnName="Driver_data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Driver_Buyer">
+            <EntityTypeMapping TypeName="ПрактикаModel.Driver_Buyer">
+              <MappingFragment StoreEntitySet="Driver_Buyer">
+                <ScalarProperty Name="ID_Buyer" ColumnName="ID_Buyer" />
+                <ScalarProperty Name="ID_Driver" ColumnName="ID_Driver" />
+                <ScalarProperty Name="ID_DR_BUY" ColumnName="ID_DR_BUY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Driver_Customer">
+            <EntityTypeMapping TypeName="ПрактикаModel.Driver_Customer">
+              <MappingFragment StoreEntitySet="Driver_Customer">
+                <ScalarProperty Name="ID_Driver" ColumnName="ID_Driver" />
+                <ScalarProperty Name="ID_Customer" ColumnName="ID_Customer" />
+                <ScalarProperty Name="ID_DR_CUS" ColumnName="ID_DR_CUS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stock">
+            <EntityTypeMapping TypeName="ПрактикаModel.Stock">
+              <MappingFragment StoreEntitySet="Stock">
+                <ScalarProperty Name="ID_Stock" ColumnName="ID_Stock" />
+                <ScalarProperty Name="Production_name" ColumnName="Production_name" />
+                <ScalarProperty Name="production_number" ColumnName="production_number" />
+                <ScalarProperty Name="Type_STO" ColumnName="Type_STO" />
+                <ScalarProperty Name="Create_date" ColumnName="Create_date" />
+                <ScalarProperty Name="quanity_of_bottles" ColumnName="quanity_of_bottles" />
+                <ScalarProperty Name="quanity_of_pallets" ColumnName="quanity_of_pallets" />
+                <ScalarProperty Name="production_rows" ColumnName="production_rows" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stock_buyer">
+            <EntityTypeMapping TypeName="ПрактикаModel.Stock_buyer">
+              <MappingFragment StoreEntitySet="Stock_buyer">
+                <ScalarProperty Name="ID_Stock" ColumnName="ID_Stock" />
+                <ScalarProperty Name="ID_Buyer" ColumnName="ID_Buyer" />
+                <ScalarProperty Name="ID_ST_BUY" ColumnName="ID_ST_BUY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ПрактикаModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище ПрактикаModel.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Хранилище ПрактикаModel.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Хранилище ПрактикаModel.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Хранилище ПрактикаModel.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ПрактикаModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Хранилище ПрактикаModel.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ПрактикаModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище ПрактикаModel.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище ПрактикаModel.sp_upgraddiagrams" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
